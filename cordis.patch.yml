@@ -1,0 +1,12 @@
+# Mount this package as a profile bundle layer.
+#
+# `dsh plugin add <path>` appends this package to `dsh.profile.bundles` when it
+# sees `dsh.bundle.patch` in package.json, and the profile boot then merges the
+# `insert` below. Editing this file is picked up live (dsh-hmr watches the
+# profile patches), but adding/removing the bundle itself needs a restart.
+#
+# The id must be unique per profile: a second package claiming the same id makes
+# the boot refuse to start (duplicate loader entry id).
+- insert:
+    - id: dsh-deepseek-webchat-claude-skin
+      name: 'dsh-deepseek-webchat-claude-skin'

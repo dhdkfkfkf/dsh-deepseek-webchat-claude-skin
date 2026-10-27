@@ -1,0 +1,55 @@
+{
+  "name": "dsh-deepseek-webchat-claude-skin",
+  "version": "0.3.0",
+  "description": "Claude-style skin (dark and light) for the DeepSeek webchat panel — injected as CSS only, no DOM changes, no network requests.",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.js",
+    "test:mount": "node scripts/build.mjs && node scripts/mount-check.mjs",
+    "verify": "npm run test && npm run test:mount",
+    "pack": "node scripts/build.mjs && npm pack"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "claude",
+    "skin",
+    "webchat",
+    "theme"
+  ],
+  "author": "dhdkfkfkf",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin.git"
+  },
+  "homepage": "https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin#readme",
+  "bugs": {
+    "url": "https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/issues"
+  },
+  "license": "MIT"
+}
