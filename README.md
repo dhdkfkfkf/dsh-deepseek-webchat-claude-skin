@@ -26,21 +26,37 @@ At a glance:
 
 ## What changed recently
 
+**0.3.3 — README only**
+
+No code change. The release notes below were rewritten for someone installing
+the plugin rather than someone reading the fix, and the install command at the
+top no longer points at an old version.
+
 **0.3.2 — the sidebar now says "Chat"**
 
-The row used to stay "Chat DeepSeek" no matter what you did. It was a positioning
-bug, not a rendering one: the plugin watched one node, but the sidebar row turns
-up six levels below it, and the old code only looked two levels down. The first
-sweep at startup missed it too, because the sidebar has not been drawn yet at
-that point. So both attempts came up empty and the label never changed.
+The row used to stay "Chat DeepSeek" no matter what you did. The plugin watched
+one node, but the sidebar row turns up six levels below it, and the old code only
+looked two levels down. The first sweep at startup missed it too, because the
+sidebar has not been drawn yet at that point. So both attempts came up empty and
+the label never changed.
 
-It now searches the whole subtree with no depth limit, and repeats that on every
+It now searches the whole subtree with no depth limit and repeats that on every
 change, so the row stays renamed across re-renders, collapses and tooltip
 rebuilds. There is a regression test that puts the row five wrappers deep.
 
-**0.3.1 — light theme**
+**0.3.1 — the sidebar row renames, and a light theme**
 
-Adds the light palette and the Claude wordmark on the DeepSeek page.
+Adds the light palette and the Claude wordmark on the DeepSeek page, and fixes
+the sidebar row going back to "Chat DeepSeek" after the panel re-rendered: React
+reuses the existing text node when only the label changes, so the observer never
+saw those updates and the rename was applied once at mount and then quietly
+overwritten. The observer now also watches character data. (0.3.2 found a second,
+deeper cause for the same symptom — see above.)
+
+**0.3.0 — first release**
+
+Dark and light Claude palettes for the DeepSeek page, the brand artwork, and the
+code-block surfaces.
 
 ## Install
 
