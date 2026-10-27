@@ -1,6 +1,6 @@
 {
   "name": "dsh-deepseek-webchat-claude-skin",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Claude-style skin (dark and light) for the DeepSeek webchat panel — injected as CSS only, no DOM changes, no network requests.",
   "type": "module",
   "main": "./index.js",

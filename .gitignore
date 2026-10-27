@@ -2,3 +2,4 @@ node_modules/
 *.tgz
 tmp-*.txt
 .DS_Store
+.git-msg.txt

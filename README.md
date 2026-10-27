@@ -23,6 +23,15 @@ At a glance:
 - **Evidence**: 42 code-level tests and a real-Chromium mount check, both behind
   `npm run verify`.
 
+
+## 0.3.2 — the sidebar row actually renames now
+
+The row was arriving six DOM levels below the node the `MutationObserver` reported, and the old code walked the added subtree only two levels deep. The first pass found nothing (the row is not rendered yet when the plugin mounts), the observer found nothing (too deep), so the label never changed — no matter how many times React re-rendered.
+
+`fixSubtree` now finds the label with a selector over the whole added subtree instead of a depth-limited walk. Measured in the running app: the button sits at depth 6 under the panel mount (`DIV.frame > DIV.sidebarCol > DIV > DIV.root > NAV.panelList > BUTTON`).
+
+Regression test: `test/shell.test.js` builds the row inside five nested wrappers and asserts it is renamed.
+
 ## Install
 
 Webchat is the page; this one is the paint. Pick the block that matches your

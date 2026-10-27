@@ -33,12 +33,13 @@ const TEXT_NODE = 3;
 const ELEMENT_NODE = 1;
 
 /**
- * How deep an added subtree is inspected. The row is button > title span >
- * text (depth 2 from the added node when the button itself is new), and the
- * collapsed-rail tooltip is one wrapper around the text. Anything deeper is
- * a chat transcript, which this module has no business walking.
+ * No depth limit on an added subtree: the sidebar row arrives as a descendant
+ * of a whole-panel mount (measured: the button sits six levels below the node
+ * the observer reports). Walking with a fixed depth missed it entirely, which
+ * is why an exact-match first pass plus a shallow recursive scan never renamed
+ * the row.
  */
-const NEARBY_DEPTH = 2;
+const LABEL_SELECTOR = `[${LABEL_ATTRIBUTE}="${SIDEBAR_LABEL}"]`;
 
 /**
  * Rename the row now, and keep it renamed as the sidebar re-renders.
@@ -71,27 +72,30 @@ export function renameSidebarLabel() {
 	}
 
 	/**
-	 * Inspect an added element and the two levels below it: the row button, its
-	 * title span, the tooltip wrapper and its text are all inside that range.
+	 * Inspect an added subtree at any depth, two ways, because the row arrives in
+	 * two shapes:
+	 *   - as the label attribute on a button, however deep it is nested
+	 *     (measured: six levels below the node the observer reports), found with
+	 *     a selector instead of a hand-rolled walk;
+	 *   - as a bare text node inside a rebuilt span or the rail tooltip, which has
+	 *     no attribute to select and is found by walking the subtree's text.
+	 * Both are needed: the first catches the row, the second catches a re-render
+	 * that rebuilds only the title.
 	 * @param {Element} element
-	 * @param {number} depth
 	 */
-	function fixNearby(element, depth) {
+	function fixSubtree(element) {
 		if (disposed) return;
 		fixLabel(element);
-		const children = element.childNodes;
-		for (let index = 0; index < children.length; index += 1) {
-			const child = children[index];
-			if (child.nodeType === TEXT_NODE) fixText(child);
-			else if (depth > 0 && child.nodeType === ELEMENT_NODE) fixNearby(child, depth - 1);
-		}
+		for (const labelled of element.querySelectorAll(LABEL_SELECTOR)) fixLabel(labelled);
+		const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+		for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) fixText(node);
 	}
 
 	// First pass: the row may already be rendered when this plugin mounts.
 	const root = document.body ?? document.documentElement;
 	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
 	for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) fixText(node);
-	for (const element of document.querySelectorAll(`[${LABEL_ATTRIBUTE}="${SIDEBAR_LABEL}"]`)) {
+	for (const element of document.querySelectorAll(LABEL_SELECTOR)) {
 		fixLabel(element);
 	}
 
@@ -113,7 +117,7 @@ export function renameSidebarLabel() {
 			}
 			for (const added of record.addedNodes) {
 				if (added.nodeType === TEXT_NODE) fixText(added);
-				else if (added.nodeType === ELEMENT_NODE) fixNearby(added, NEARBY_DEPTH);
+				else if (added.nodeType === ELEMENT_NODE) fixSubtree(added);
 			}
 		}
 	});
