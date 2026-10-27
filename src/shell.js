@@ -98,10 +98,17 @@ export function renameSidebarLabel() {
 	// Re-renders: the sidebar unmounts the title span when it collapses, rebuilds
 	// the row when it expands, and the tooltip is created on hover. Attributes
 	// are observed because React restores `aria-label` on a full row re-render.
+	// Character data is observed because a render that only changes the label
+	// text reuses the existing text node (React writes `nodeValue`), which a
+	// childList observer never sees.
 	const observer = new MutationObserver((records) => {
 		for (const record of records) {
 			if (record.type === "attributes") {
 				fixLabel(record.target);
+				continue;
+			}
+			if (record.type === "characterData") {
+				fixText(record.target);
 				continue;
 			}
 			for (const added of record.addedNodes) {
@@ -115,6 +122,7 @@ export function renameSidebarLabel() {
 		subtree: true,
 		attributes: true,
 		attributeFilter: [LABEL_ATTRIBUTE],
+		characterData: true,
 	});
 
 	return function () {

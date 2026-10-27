@@ -250,6 +250,12 @@ const CHECKS = `(async () => {
   await new Promise((r) => setTimeout(r, 30));
   check("a re-rendered title is renamed again", rebuilt.textContent === "Chat", rebuilt.textContent);
 
+  // A render that only changes the label reuses the text node (React writes
+  // nodeValue), which is not a childList mutation.
+  rebuilt.firstChild.data = "Chat DeepSeek";
+  await new Promise((r) => setTimeout(r, 30));
+  check("an in-place label update is renamed again", rebuilt.textContent === "Chat", rebuilt.textContent);
+
   // The collapsed-rail tooltip is the same copy in its own wrapper.
   const tip = document.createElement("div");
   tip.id = "tooltip";

@@ -31,7 +31,7 @@ setup, with DSH fully closed.
 ### Already have the panel
 
 ```sh
-dsh plugin --profile desktop add https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.0/dsh-deepseek-webchat-claude-skin-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.1/dsh-deepseek-webchat-claude-skin-0.3.1.tgz
 ```
 
 ### Fresh install
@@ -41,7 +41,7 @@ dependency that declares a bundle patch, so the panel and the skin are registere
 in the same pass — there is no second step:
 
 ```sh
-dsh plugin --profile desktop add @jaychang1989/dsh-webchat https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.0/dsh-deepseek-webchat-claude-skin-0.3.0.tgz
+dsh plugin --profile desktop add @jaychang1989/dsh-webchat https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.1/dsh-deepseek-webchat-claude-skin-0.3.1.tgz
 ```
 
 Then start DSH. Adding or removing a bundle is a boot-time decision; editing an
