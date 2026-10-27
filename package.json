@@ -1,7 +1,17 @@
 {
   "name": "dsh-deepseek-webchat-claude-skin",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Claude-style skin (dark and light) for the DeepSeek webchat panel — injected as CSS only, no DOM changes, no network requests.",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "claude",
+    "skin",
+    "webchat",
+    "theme"
+  ],
   "type": "module",
   "main": "./index.js",
   "exports": {
@@ -18,13 +28,6 @@
       "inject": []
     }
   },
-  "scripts": {
-    "build": "node scripts/build.mjs",
-    "test": "node --test test/*.test.js",
-    "test:mount": "node scripts/build.mjs && node scripts/mount-check.mjs",
-    "verify": "npm run test && npm run test:mount",
-    "pack": "node scripts/build.mjs && npm pack"
-  },
   "files": [
     "index.js",
     "client.js",
@@ -32,17 +35,15 @@
     "README.md",
     "LICENSE"
   ],
-  "keywords": [
-    "deepseek",
-    "deepseek-harness",
-    "dsh",
-    "dsh-plugin",
-    "claude",
-    "skin",
-    "webchat",
-    "theme"
-  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.js",
+    "test:mount": "node scripts/build.mjs && node scripts/mount-check.mjs",
+    "verify": "npm run test && npm run test:mount",
+    "pack": "node scripts/build.mjs && npm pack"
+  },
   "author": "dhdkfkfkf",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin.git"
@@ -51,5 +52,7 @@
   "bugs": {
     "url": "https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/issues"
   },
-  "license": "MIT"
+  "engines": {
+    "node": ">=20"
+  }
 }

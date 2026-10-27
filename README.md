@@ -24,13 +24,23 @@ At a glance:
   `npm run verify`.
 
 
-## 0.3.2 — the sidebar row actually renames now
+## What changed recently
 
-The row was arriving six DOM levels below the node the `MutationObserver` reported, and the old code walked the added subtree only two levels deep. The first pass found nothing (the row is not rendered yet when the plugin mounts), the observer found nothing (too deep), so the label never changed — no matter how many times React re-rendered.
+**0.3.2 — the sidebar now says "Chat"**
 
-`fixSubtree` now finds the label with a selector over the whole added subtree instead of a depth-limited walk. Measured in the running app: the button sits at depth 6 under the panel mount (`DIV.frame > DIV.sidebarCol > DIV > DIV.root > NAV.panelList > BUTTON`).
+The row used to stay "Chat DeepSeek" no matter what you did. It was a positioning
+bug, not a rendering one: the plugin watched one node, but the sidebar row turns
+up six levels below it, and the old code only looked two levels down. The first
+sweep at startup missed it too, because the sidebar has not been drawn yet at
+that point. So both attempts came up empty and the label never changed.
 
-Regression test: `test/shell.test.js` builds the row inside five nested wrappers and asserts it is renamed.
+It now searches the whole subtree with no depth limit, and repeats that on every
+change, so the row stays renamed across re-renders, collapses and tooltip
+rebuilds. There is a regression test that puts the row five wrappers deep.
+
+**0.3.1 — light theme**
+
+Adds the light palette and the Claude wordmark on the DeepSeek page.
 
 ## Install
 
@@ -40,7 +50,7 @@ setup, with DSH fully closed.
 ### Already have the panel
 
 ```sh
-dsh plugin --profile desktop add https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.1/dsh-deepseek-webchat-claude-skin-0.3.1.tgz
+dsh plugin --profile desktop add https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.2/dsh-deepseek-webchat-claude-skin-0.3.2.tgz
 ```
 
 ### Fresh install
@@ -50,7 +60,7 @@ dependency that declares a bundle patch, so the panel and the skin are registere
 in the same pass — there is no second step:
 
 ```sh
-dsh plugin --profile desktop add @jaychang1989/dsh-webchat https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.1/dsh-deepseek-webchat-claude-skin-0.3.1.tgz
+dsh plugin --profile desktop add @jaychang1989/dsh-webchat https://github.com/dhdkfkfkf/dsh-deepseek-webchat-claude-skin/releases/download/v0.3.2/dsh-deepseek-webchat-claude-skin-0.3.2.tgz
 ```
 
 Then start DSH. Adding or removing a bundle is a boot-time decision; editing an
